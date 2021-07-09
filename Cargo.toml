@@ -8,3 +8,4 @@ edition = "2018"
 [dependencies]
 hyper = { version = "0.14", features = ["full"] }
 tokio = { version = "1", features = ["full"] }
+sqlx = { version = "0.5", features = ["sqlite", "runtime-tokio-rustls"] }
