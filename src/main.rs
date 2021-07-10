@@ -1,31 +1,18 @@
-use rocket::tokio::time::{sleep, Duration};
 use sqlx::sqlite::{SqliteConnectOptions, SqlitePoolOptions};
 use std::str::FromStr;
 
 mod handler;
 
-const CREATE_TABLE: &str =
-    "CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL)";
+const CREATE_TABLE: &str = r#"CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL)"#;
 
 #[macro_use]
 extern crate rocket;
-
-#[get("/")]
-fn index() -> &'static str {
-    "Hello world"
-}
-
-#[get("/delay/<seconds>")]
-async fn delay(seconds: u64) -> String {
-    sleep(Duration::from_secs(seconds)).await;
-    format!("Wanted for {} seconds", seconds)
-}
 
 #[launch]
 async fn rocket() -> _ {
     prepare().await.expect("wrong prepared db");
 
-    rocket::build().mount("/", routes![index, delay, handler::hello_world])
+    rocket::build().mount("/", routes![handler::hello_world])
 }
 
 async fn prepare() -> Result<(), sqlx::Error> {
@@ -40,6 +27,13 @@ async fn prepare() -> Result<(), sqlx::Error> {
         .execute(&pool)
         .await
         .expect("create table users failed");
+
+    let name = String::from("ivan");
+
+    sqlx::query!(r#"INSERT INTO users (name) VALUES (?1)"#, name)
+        .execute(&pool)
+        .await
+        .expect("not added user to user table");
 
     Ok(())
 }

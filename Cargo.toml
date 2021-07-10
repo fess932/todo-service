@@ -7,6 +7,6 @@ edition = "2018"
 
 [dependencies]
 tokio = { version = "1", features = ["full"] }
-sqlx = { version = "0.5", features = ["sqlite", "runtime-tokio-rustls"] }
+sqlx = { version = "0.5", features = ["macros", "sqlite", "runtime-tokio-rustls"] }
 futures = "0.3"
 rocket = "0.5.0-rc.1"
