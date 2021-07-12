@@ -15,8 +15,8 @@ struct HtmlUser {
     name: String
 }
 
-#[get("/user")]
-pub async fn get_users(uscase: &State<Usecase>) -> Template {
+#[get("/")]
+pub async fn todo_list(uscase: &State<Usecase>) -> Template {
     println!("Number of visits");
 
     let mut u = TemplateContext{title: String::from("List of all users"), users: vec![]};

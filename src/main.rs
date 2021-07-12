@@ -1,4 +1,5 @@
 use rocket_dyn_templates::Template;
+use rocket::fs::FileServer;
 
 mod buisness;
 mod delivery;
@@ -16,5 +17,6 @@ async fn rocket() -> _ {
     rocket::build()
         .manage(buis)
         .attach(Template::fairing())
-        .mount("/", routes![delivery::add_user, delivery::get_users])
+        .mount("/static", FileServer::from("static"))
+        .mount("/", routes![delivery::add_user, delivery::todo_list])
 }

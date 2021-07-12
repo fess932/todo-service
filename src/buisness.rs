@@ -15,6 +15,17 @@ pub trait Delivery {
 pub struct User {
     pub name: String
 }
+
+pub struct Task {
+    pub task_name: String,
+    pub task_value: String,
+    pub status: TaskStatus
+}
+
+pub enum TaskStatus {
+    Progress,
+    Done
+}
 // end models
 
 //
@@ -31,6 +42,10 @@ impl Usecase {
     }
 
     pub async fn get_users(&self) -> Vec<User> {
+        self.store.get_users().await
+    }
+
+    pub async fn add_task(&self) -> Vec<User> {
         self.store.get_users().await
     }
 }

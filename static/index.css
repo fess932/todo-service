@@ -1,0 +1,25 @@
+body {
+    background-color: #F9F9F9; 
+}
+
+
+/* // http://localhost:8000/user */
+.card__wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    text-align: center;
+}
+
+.card {
+    background-color: #F7DBF0;
+    border-radius: 50px;
+    display: grid;
+    padding: 10px;
+}
+
+button {
+    border: none;
+    height: 3rem;
+    width: 10rem;
+}
