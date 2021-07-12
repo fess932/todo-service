@@ -11,12 +11,13 @@ pub struct SqliteStore(SqlitePool);
 impl buisness::Store for SqliteStore {
     fn store(&self, name: String) {
         // todo: SYNC FOR STORE
+        println!("store impl name: {}", name);
         sqlx::query!(r#"INSERT INTO users (name) VALUES (?1)"#, name).execute(&self.0);
     }
 }
 
-pub async fn NewStore() -> Result<Box<SqliteStore>, sqlx::Error> {
-    // prepare().await.expect("wrong prepared db");
+pub async fn new_store() -> Result<Box<dyn buisness::Store + Send + Sync>, sqlx::Error> {
+    prepare().await.expect("wrong prepared db");
 
     let conn = SqliteConnectOptions::from_str("sqlite:db.sqlite3")?.create_if_missing(true);
 

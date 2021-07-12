@@ -13,12 +13,13 @@ pub trait Buisness {
 // interfaces
 
 pub struct Usecase {
-    store: Box<dyn Store>,
+    store: Box<dyn Store + Send + Sync>,
 }
 
 impl Buisness for Usecase {
     fn create(&self, name: String) {
-        println!("usecase impl");
+        println!("usecase impl name: {}", name);
+        self.store.store(name);
     }
 }
 
@@ -27,8 +28,6 @@ pub enum BuisnessError {
     Missing,
 }
 
-pub fn NewBuisness(store: impl Store + 'static) -> Usecase {
-    return Usecase {
-        store: Box::new(store),
-    };
+pub fn new_buisness(store: Box<dyn Store + Send + Sync>) -> Usecase {
+    return Usecase { store: store };
 }
