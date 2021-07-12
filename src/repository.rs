@@ -1,4 +1,5 @@
-use sqlx::sqlite::{SqliteConnectOptions, SqlitePoolOptions};
+use sqlx::sqlite::{SqliteConnectOptions, SqlitePoolOptions, SqliteRow};
+use sqlx::Row;
 use sqlx::SqlitePool;
 use std::str::FromStr;
 
@@ -18,6 +19,21 @@ impl buisness::Store for SqliteStore {
             .execute(&self.0)
             .await
             .expect("cannot add users");
+    }
+
+    async fn get_users(&self) -> Vec<buisness::User> {
+        println!("get users from db");
+
+        let users = sqlx::query("SELECT * From users")
+            .map(|row: SqliteRow| {
+                let name = row.try_get("name").expect("not found name");
+                buisness::User{name: name}
+            })
+            .fetch_all(&self.0).await.expect("cannot fetch users from db");
+        
+        println!("get users from db");
+
+        return users
     }
 }
 

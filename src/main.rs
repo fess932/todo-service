@@ -1,3 +1,5 @@
+use rocket_dyn_templates::Template;
+
 mod buisness;
 mod delivery;
 mod repository;
@@ -13,5 +15,6 @@ async fn rocket() -> _ {
 
     rocket::build()
         .manage(buis)
-        .mount("/", routes![delivery::count])
+        .attach(Template::fairing())
+        .mount("/", routes![delivery::add_user, delivery::get_users])
 }

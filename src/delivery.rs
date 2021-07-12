@@ -1,12 +1,36 @@
 use rocket::State;
+use rocket_dyn_templates::Template;
+use serde::Serialize;
 
 use crate::buisness::{Usecase};
 
-#[get("/user/<name>")]
-pub async fn count(uscase: &State<Usecase>, name: String) -> String {
-    let current_count = 2;
-    
-    uscase.create(name).await;
+#[derive(Serialize)]
+struct TemplateContext {
+    title: String,
+    users: Vec<HtmlUser>,
+}
 
-    format!("Number of visits: {}", current_count)
+#[derive(Serialize)]
+struct HtmlUser {
+    name: String
+}
+
+#[get("/user")]
+pub async fn get_users(uscase: &State<Usecase>) -> Template {
+    println!("Number of visits");
+
+    let mut u = TemplateContext{title: String::from("List of all users"), users: vec![]};
+    let users = uscase.get_users().await;
+
+    for x in &users {
+        u.users.push(HtmlUser{name: x.name.clone()});
+    }
+
+    Template::render("main", u)
+}
+
+#[post("/user/<name>")]
+pub async fn add_user(uscase: &State<Usecase>, name: String) -> String {
+    uscase.create(name.clone()).await;
+    format!("User created with name, {}", name)
 }
