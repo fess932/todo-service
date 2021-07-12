@@ -1,6 +1,6 @@
 // interfaces
 #[async_trait]
-pub trait Store {
+pub trait Store: Send + Sync {
     async fn store(&self, name: String);
 }
 
@@ -11,7 +11,7 @@ pub trait Delivery {
 // interfaces
 
 pub struct Usecase {
-    store: Box<dyn Store + Send + Sync>,
+    store: Box<dyn Store>,
 }
 
 impl Usecase {
@@ -26,6 +26,6 @@ pub enum BuisnessError {
     // Missing,
 }
 
-pub fn new_buisness(store: Box<dyn Store + Send + Sync>) -> Usecase {
+pub fn new_buisness(store: Box<dyn Store>) -> Usecase {
     return Usecase { store: store };
 }
