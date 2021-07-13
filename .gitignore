@@ -1,4 +1,5 @@
 /target
+.idea
 
 *.sqlite3
 *.sqlite3-shm
