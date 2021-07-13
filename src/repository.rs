@@ -27,13 +27,15 @@ impl buisness::Store for SqliteStore {
         let users = sqlx::query("SELECT * From users")
             .map(|row: SqliteRow| {
                 let name = row.try_get("name").expect("not found name");
-                buisness::User{name: name}
+                buisness::User { name: name }
             })
-            .fetch_all(&self.0).await.expect("cannot fetch users from db");
-        
+            .fetch_all(&self.0)
+            .await
+            .expect("cannot fetch users from db");
+
         println!("get users from db");
 
-        return users
+        return users;
     }
 }
 

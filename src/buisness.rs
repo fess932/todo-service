@@ -13,18 +13,18 @@ pub trait Delivery {
 
 //models
 pub struct User {
-    pub name: String
+    pub name: String,
 }
 
 pub struct Task {
     pub task_name: String,
     pub task_value: String,
-    pub status: TaskStatus
+    pub status: TaskStatus,
 }
 
 pub enum TaskStatus {
     Progress,
-    Done
+    Done,
 }
 // end models
 
@@ -34,9 +34,8 @@ pub struct Usecase {
     store: Box<dyn Store>,
 }
 
-
 impl Usecase {
-    pub async fn create(&self, name: String)  {
+    pub async fn create(&self, name: String) {
         println!("usecase impl name: {}", name);
         self.store.store(name).await;
     }

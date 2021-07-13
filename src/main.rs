@@ -1,5 +1,5 @@
-use rocket_dyn_templates::Template;
 use rocket::fs::FileServer;
+use rocket_dyn_templates::Template;
 
 mod buisness;
 mod delivery;
